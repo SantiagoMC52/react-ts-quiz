@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React, { FC } from 'react';
 
-const Questioncard = () => (
+const Questioncard:FC = () => (
   <h2>Question Card</h2>
 );
 
