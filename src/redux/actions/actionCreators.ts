@@ -4,7 +4,7 @@ import actionTypes from './actionTypes';
 
 const url = 'https://opentdb.com/api.php?amount=50&category=9&type=multiple';
 
-export default function loadQuestions() {
+export function loadQuestions() {
   return async (dispatch: Dispatch) => {
     try {
       const { data } = await axios(url);
@@ -17,5 +17,11 @@ export default function loadQuestions() {
         type: actionTypes.LOAD_QUESTIONS_ERROR
       });
     }
+  };
+}
+
+export function loadQuestion() {
+  return {
+    type: actionTypes.LOAD_QUESTION
   };
 }
