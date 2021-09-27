@@ -5,7 +5,7 @@ interface IQuestions {
     questions: [];
 }
 
-function questionsReducer(allQuestions = [], action: IQuestions) {
+function questionsReducer(allQuestions: any = [], action: IQuestions) {
   if (action.type === actionTypes.LOAD_QUESTIONS) { return action.questions; }
   return allQuestions;
 }
