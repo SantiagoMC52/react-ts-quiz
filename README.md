@@ -1,1 +1,1 @@
-# react-ts-quiz
+# React-typescript-Quiz
