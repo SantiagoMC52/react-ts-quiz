@@ -10,7 +10,7 @@ export default function loadQuestions() {
       const { data } = await axios(url);
       dispatch({
         type: actionTypes.LOAD_QUESTIONS,
-        questions: data
+        questions: data.results
       });
     } catch (error) {
       dispatch({
