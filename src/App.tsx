@@ -1,8 +1,9 @@
 import React from 'react';
+import Questioncard from './components/QuestionCard';
 
 function App() {
   return (
-    <h1>Title</h1>
+    <Questioncard />
   );
 }
 
