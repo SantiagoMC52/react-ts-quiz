@@ -4,15 +4,19 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import loadQuestions from '../../redux/actions/actionCreators';
 
 const Questioncard:FC = () => {
+  // eslint-disable-next-line no-unused-vars
   const [counter, setCounter] = useState(0);
   const questions = useSelector((store: RootStateOrAny) => store.questionsReducer);
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (!questions.length) dispatch(loadQuestions());
   }, []);
+
   const nextQuestion = () => {
-    setCounter(counter + 1);
+    // setCounter(counter + 1);
   };
+
   let answers: any = [];
 
   if (questions.length) {
@@ -29,8 +33,8 @@ const Questioncard:FC = () => {
     <>
       <h2>Question Card</h2>
       {questions.length ? <h3 dangerouslySetInnerHTML={{ __html: questions[counter].question }} /> : ''}
-      {questions.length ? answers.map((item: any) => <p>{item.answer}</p>) : ''}
-      <button type="button" onClick={() => nextQuestion()}>Next</button>
+      {questions.length ? answers.map((item: any) => <p><button onClick={() => nextQuestion()} style={{ background: `${item.correct ? 'green' : 'red'}` }} type="button">{item.answer}</button></p>) : ''}
+      {/* <button type="button" onClick={() => nextQuestion()}>Next</button> */}
     </>
   );
 };
