@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import loadQuestions from '../../redux/actions/actionCreators';
@@ -12,12 +13,23 @@ const Questioncard:FC = () => {
   const nextQuestion = () => {
     setCounter(counter + 1);
   };
+  let answers: any = [];
+
+  if (questions.length) {
+    const correctAnswers = { answer: questions[counter].correct_answer, correct: true };
+    const wrongAnswers = questions[counter].incorrect_answers
+      .map((answer: string) => ({ answer, correct: false }));
+    answers = [correctAnswers, ...wrongAnswers];
+    answers.sort(() => Math.random() - 0.5);
+    // eslint-disable-next-line no-console
+    console.log(answers);
+  }
+
   return (
     <>
       <h2>Question Card</h2>
       {questions.length ? <h3 dangerouslySetInnerHTML={{ __html: questions[counter].question }} /> : ''}
-      <p>{questions.length ? questions[counter].correct_answer : ''}</p>
-      {questions.length ? questions[counter].incorrect_answers.map((answer: string) => <p>{answer}</p>) : ''}
+      {questions.length ? answers.map((item: any) => <p>{item.answer}</p>) : ''}
       <button type="button" onClick={() => nextQuestion()}>Next</button>
     </>
   );
