@@ -1,7 +1,10 @@
 import { combineReducers } from 'redux';
+import questionsReducer from './questionsReducer';
+// import questionReducer from './questionReducer';
 
-const rootReducer = combineReducers({
-
+export const rootReducer = combineReducers({
+  questionsReducer
+//   questionReducer
 });
 
 export default rootReducer;
