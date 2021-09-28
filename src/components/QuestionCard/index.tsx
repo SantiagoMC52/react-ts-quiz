@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-danger */
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
@@ -5,7 +7,9 @@ import loadQuestions from '../../redux/actions/actionCreators';
 
 const Questioncard:FC = () => {
   // eslint-disable-next-line no-unused-vars
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState<number>(0);
+  const [showScore, setShowScore] = useState<boolean>(false);
+  const [score, setScore] = useState<number>(0);
   const questions = useSelector((store: RootStateOrAny) => store.questionsReducer);
   const dispatch = useDispatch();
 
@@ -13,14 +17,25 @@ const Questioncard:FC = () => {
     if (!questions.length) dispatch(loadQuestions());
   }, []);
 
-  const nextQuestion = () => {
-    // setCounter(counter + 1);
+  const nextQuestion = (correct: any) => {
+    const count = counter + 1;
+
+    if (correct) {
+      console.log('Answer correct');
+      setScore(score + 1);
+    }
+
+    if (count < questions.length) {
+      setCounter(counter + 1);
+    } else {
+      setShowScore(true);
+    }
   };
 
   let answers: any = [];
 
   if (questions.length) {
-    const correctAnswers = { answer: questions[counter].correct_answer, correct: true };
+    const correctAnswers = { answer: questions[counter]?.correct_answer, correct: true };
     const wrongAnswers = questions[counter].incorrect_answers
       .map((answer: string) => ({ answer, correct: false }));
     answers = [correctAnswers, ...wrongAnswers];
@@ -30,12 +45,37 @@ const Questioncard:FC = () => {
   }
 
   return (
-    <>
-      <h2>Question Card</h2>
-      {questions.length ? <h3 dangerouslySetInnerHTML={{ __html: questions[counter].question }} /> : ''}
-      {questions.length ? answers.map((item: any) => <p><button onClick={() => nextQuestion()} style={{ background: `${item.correct ? 'green' : 'red'}` }} type="button">{item.answer}</button></p>) : ''}
-      {/* <button type="button" onClick={() => nextQuestion()}>Next</button> */}
-    </>
+    <div>
+      {
+        showScore ? (
+          <div>
+            You scored
+            {' '}
+            {score}
+            {' '}
+            out of
+            {' '}
+            {questions.length}
+          </div>
+        ) : (
+          questions.length ? (
+            <>
+              <h2>Question Card</h2>
+              <h3 dangerouslySetInnerHTML={{ __html: questions[counter]?.question }} />
+              {answers.map((item: any) => (
+                <p>
+                  <button
+                    type="button"
+                    onClick={() => nextQuestion(item.correct)}
+                    dangerouslySetInnerHTML={{ __html: item.answer }}
+                  />
+                </p>
+              ))}
+            </>
+          ) : ''
+        )
+      }
+    </div>
   );
 };
 

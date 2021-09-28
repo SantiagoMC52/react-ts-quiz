@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Dispatch } from 'redux';
 import actionTypes from './actionTypes';
 
-const url = 'https://opentdb.com/api.php?amount=50&category=9&type=multiple';
+const url = 'https://opentdb.com/api.php?amount=5&category=9&type=multiple';
 
 export default function loadQuestions() {
   return async (dispatch: Dispatch) => {
