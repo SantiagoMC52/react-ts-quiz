@@ -6,7 +6,6 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import loadQuestions from '../../redux/actions/actionCreators';
 
 const Questioncard:FC = () => {
-  // eslint-disable-next-line no-unused-vars
   const [counter, setCounter] = useState<number>(0);
   const [showScore, setShowScore] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
@@ -17,7 +16,7 @@ const Questioncard:FC = () => {
     if (!questions.length) dispatch(loadQuestions());
   }, []);
 
-  const nextQuestion = (correct: any) => {
+  const nextQuestion = (correct: boolean): void => {
     const count = counter + 1;
 
     if (correct) {
@@ -32,15 +31,15 @@ const Questioncard:FC = () => {
     }
   };
 
-  let answers: any = [];
+  let answers:{answer: string, correct: boolean}[] = [];
 
   if (questions.length) {
-    const correctAnswers = { answer: questions[counter]?.correct_answer, correct: true };
-    const wrongAnswers = questions[counter].incorrect_answers
-      .map((answer: string) => ({ answer, correct: false }));
+    const correctAnswers = { answer: questions[counter].correct_answer, correct: true };
+    const wrongAnswers = questions[counter].incorrect_answers.map((
+      answer: string
+    ) => ({ answer, correct: false }));
     answers = [correctAnswers, ...wrongAnswers];
     answers.sort(() => Math.random() - 0.5);
-    // eslint-disable-next-line no-console
     console.log(answers);
   }
 
@@ -61,9 +60,9 @@ const Questioncard:FC = () => {
           questions.length ? (
             <>
               <h2>Question Card</h2>
-              <h3 dangerouslySetInnerHTML={{ __html: questions[counter]?.question }} />
+              <h3 dangerouslySetInnerHTML={{ __html: questions[counter].question }} />
               {answers.map((item: any) => (
-                <p>
+                <p key={item.answer}>
                   <button
                     type="button"
                     onClick={() => nextQuestion(item.correct)}

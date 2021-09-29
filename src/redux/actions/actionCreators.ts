@@ -19,9 +19,3 @@ export default function loadQuestions() {
     }
   };
 }
-
-// export function loadQuestion() {
-//   return {
-//     type: actionTypes.LOAD_QUESTION
-//   };
-// }
