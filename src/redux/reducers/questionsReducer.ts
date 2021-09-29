@@ -1,11 +1,12 @@
+/* eslint-disable camelcase */
 import actionTypes from '../actions/actionTypes';
 
-interface IQuestions {
+type Action = {
     type: string;
     questions: string[];
 }
 
-function questionsReducer(allQuestions: any = [], action: IQuestions) {
+function questionsReducer(allQuestions: any = [], action: Action) {
   if (action.type === actionTypes.LOAD_QUESTIONS) {
     return action.questions;
   }
