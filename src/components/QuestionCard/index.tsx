@@ -9,23 +9,29 @@ const Questioncard:FC = () => {
   const [counter, setCounter] = useState<number>(0);
   const [showScore, setShowScore] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
+  const [displayAnswer, setDisplayAnswer] = useState(false);
   const questions = useSelector((store: RootStateOrAny) => store.questionsReducer);
   const dispatch = useDispatch();
+  console.log(questions);
 
   useEffect(() => {
     if (!questions.length) dispatch(loadQuestions());
   }, []);
 
-  const nextQuestion = (correct: boolean): void => {
-    const count = counter + 1;
-
+  const countScore = (correct: boolean) => {
     if (correct) {
       console.log('Answer correct');
       setScore(score + 1);
     }
+    setDisplayAnswer(true);
+  };
+
+  const nextQuestion = (): void => {
+    const count = counter + 1;
 
     if (count < questions.length) {
       setCounter(counter + 1);
+      setDisplayAnswer(false);
     } else {
       setShowScore(true);
     }
@@ -61,15 +67,24 @@ const Questioncard:FC = () => {
             <>
               <h2>Question Card</h2>
               <h3 dangerouslySetInnerHTML={{ __html: questions[counter].question }} />
-              {answers.map((item: any) => (
-                <p key={item.answer}>
-                  <button
-                    type="button"
-                    onClick={() => nextQuestion(item.correct)}
-                    dangerouslySetInnerHTML={{ __html: item.answer }}
-                  />
-                </p>
-              ))}
+              {answers.map((item: any) => {
+                const bgColor = displayAnswer
+                  ? questions[counter].correct_answer === item.answer
+                    ? 'green'
+                    : 'red'
+                  : 'blue';
+                return (
+                  <p key={item.answer}>
+                    <button
+                      style={{ backgroundColor: bgColor, color: 'white' }}
+                      type="button"
+                      onClick={() => countScore(item.correct)}
+                      dangerouslySetInnerHTML={{ __html: item.answer }}
+                    />
+                  </p>
+                );
+              })}
+              <button onClick={() => nextQuestion()} type="button"> Next</button>
             </>
           ) : ''
         )
