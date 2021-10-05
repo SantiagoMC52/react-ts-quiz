@@ -10,6 +10,7 @@ const Questioncard:FC = () => {
   const [showScore, setShowScore] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [displayAnswer, setDisplayAnswer] = useState(false);
+  const [answers, setAnswers] = useState<any>([]);
   const questions = useSelector((store: RootStateOrAny) => store.questionsReducer);
   const dispatch = useDispatch();
   console.log(questions);
@@ -17,6 +18,17 @@ const Questioncard:FC = () => {
   useEffect(() => {
     if (!questions.length) dispatch(loadQuestions());
   }, []);
+
+  useEffect(() => {
+    if (questions.length) {
+      const correctAnswers = { answer: questions[counter].correct_answer, correct: true };
+      const wrongAnswers = questions[counter].incorrect_answers.map((
+        answer: string
+      ) => ({ answer, correct: false }));
+      setAnswers([correctAnswers, ...wrongAnswers].sort(() => Math.random() - 0.5));
+    }
+  }, [counter]);
+  console.log(answers);
 
   const countScore = (correct: boolean) => {
     if (correct) {
@@ -36,18 +48,6 @@ const Questioncard:FC = () => {
       setShowScore(true);
     }
   };
-
-  let answers:{answer: string, correct: boolean}[] = [];
-
-  if (questions.length) {
-    const correctAnswers = { answer: questions[counter].correct_answer, correct: true };
-    const wrongAnswers = questions[counter].incorrect_answers.map((
-      answer: string
-    ) => ({ answer, correct: false }));
-    answers = [correctAnswers, ...wrongAnswers];
-    answers.sort(() => Math.random() - 0.5);
-    console.log(answers);
-  }
 
   return (
     <div>
