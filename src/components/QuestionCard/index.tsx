@@ -12,7 +12,8 @@ const Questioncard:FC = () => {
   const [displayAnswer, setDisplayAnswer] = useState(false);
   const questions = useSelector((store: RootStateOrAny) => store.questionsReducer);
   const dispatch = useDispatch();
-  console.log(questions);
+
+  const question = questions[counter];
 
   useEffect(() => {
     if (!questions.length) dispatch(loadQuestions());
@@ -20,7 +21,6 @@ const Questioncard:FC = () => {
 
   const countScore = (correct: boolean) => {
     if (correct) {
-      console.log('Answer correct');
       setScore(score + 1);
     }
     setDisplayAnswer(true);
@@ -37,18 +37,6 @@ const Questioncard:FC = () => {
     }
   };
 
-  let answers:{answer: string, correct: boolean}[] = [];
-
-  if (questions.length) {
-    const correctAnswers = { answer: questions[counter].correct_answer, correct: true };
-    const wrongAnswers = questions[counter].incorrect_answers.map((
-      answer: string
-    ) => ({ answer, correct: false }));
-    answers = [correctAnswers, ...wrongAnswers];
-    answers.sort(() => Math.random() - 0.5);
-    console.log(answers);
-  }
-
   return (
     <div>
       {
@@ -63,30 +51,28 @@ const Questioncard:FC = () => {
             {questions.length}
           </div>
         ) : (
-          questions.length ? (
-            <>
-              <h2>Question Card</h2>
-              <h3 dangerouslySetInnerHTML={{ __html: questions[counter].question }} />
-              {answers.map((item: any) => {
-                const bgColor = displayAnswer
-                  ? questions[counter].correct_answer === item.answer
-                    ? 'green'
-                    : 'red'
-                  : 'blue';
-                return (
-                  <p key={item.answer}>
-                    <button
-                      style={{ backgroundColor: bgColor, color: 'white' }}
-                      type="button"
-                      onClick={() => countScore(item.correct)}
-                      dangerouslySetInnerHTML={{ __html: item.answer }}
-                    />
-                  </p>
-                );
-              })}
-              <button onClick={() => nextQuestion()} type="button"> Next</button>
-            </>
-          ) : ''
+          <>
+            <h2>Question Card</h2>
+            <h3 dangerouslySetInnerHTML={{ __html: question?.question }} />
+            {question?.answers?.map((item: any) => {
+              const bgColor = displayAnswer
+                ? question.correct_answer === item.item
+                  ? 'green'
+                  : 'red'
+                : 'blue';
+              return (
+                <p key={item.item}>
+                  <button
+                    style={{ backgroundColor: bgColor, color: 'white' }}
+                    type="button"
+                    onClick={() => countScore(item.answer)}
+                    dangerouslySetInnerHTML={{ __html: item.item }}
+                  />
+                </p>
+              );
+            })}
+            <button onClick={() => nextQuestion()} type="button"> Next</button>
+          </>
         )
       }
     </div>
