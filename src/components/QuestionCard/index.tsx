@@ -10,7 +10,6 @@ const Questioncard:FC = () => {
   const [showScore, setShowScore] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [displayAnswer, setDisplayAnswer] = useState(false);
-  const [answers, setAnswers] = useState<any>([]);
   const questions = useSelector((store: RootStateOrAny) => store.questionsReducer);
   const dispatch = useDispatch();
   console.log(questions);
@@ -18,17 +17,6 @@ const Questioncard:FC = () => {
   useEffect(() => {
     if (!questions.length) dispatch(loadQuestions());
   }, []);
-
-  useEffect(() => {
-    if (questions.length) {
-      const correctAnswers = { answer: questions[counter].correct_answer, correct: true };
-      const wrongAnswers = questions[counter].incorrect_answers.map((
-        answer: string
-      ) => ({ answer, correct: false }));
-      setAnswers([correctAnswers, ...wrongAnswers].sort(() => Math.random() - 0.5));
-    }
-  }, [counter]);
-  console.log(answers);
 
   const countScore = (correct: boolean) => {
     if (correct) {
@@ -67,19 +55,19 @@ const Questioncard:FC = () => {
             <>
               <h2>Question Card</h2>
               <h3 dangerouslySetInnerHTML={{ __html: questions[counter].question }} />
-              {answers.map((item: any) => {
+              {questions[counter].answers.map((item: any) => {
                 const bgColor = displayAnswer
-                  ? questions[counter].correct_answer === item.answer
+                  ? item.answer
                     ? 'green'
                     : 'red'
                   : 'blue';
                 return (
-                  <p key={item.answer}>
+                  <p key={item.item}>
                     <button
                       style={{ backgroundColor: bgColor, color: 'white' }}
                       type="button"
-                      onClick={() => countScore(item.correct)}
-                      dangerouslySetInnerHTML={{ __html: item.answer }}
+                      onClick={() => countScore(item.answer)}
+                      dangerouslySetInnerHTML={{ __html: item.item }}
                     />
                   </p>
                 );
