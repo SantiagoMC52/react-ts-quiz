@@ -8,27 +8,28 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import loadQuestions from '../../redux/actions/actionCreators';
 import './style.css';
 
+interface IQuestion {
+  item: string;
+  answer: boolean;
+}
+
 const Questioncard:FC = () => {
   const [counter, setCounter] = useState<number>(0);
   const [showScore, setShowScore] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
-  const [answerSelected, setAnswerSelected] = useState(false);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [answerSelected, setAnswerSelected] = useState<boolean>(false);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const questions = useSelector((store: RootStateOrAny) => store.questionsReducer);
   const dispatch = useDispatch();
-
-  console.log(questions);
 
   useEffect(() => {
     if (!questions.length) dispatch(loadQuestions());
   }, []);
 
   const question = questions[counter];
-  console.log(question);
 
   const countScore = (correct: boolean) => {
     if (correct) {
-      console.log('Answer correct');
       setScore(score + 1);
     }
   };
@@ -45,13 +46,13 @@ const Questioncard:FC = () => {
     }
   };
 
-  const handleListItemClick = (item: any, event:any) => {
+  const handleListItemClick = (item: boolean, event: any) => {
     setAnswerSelected(true);
     setSelectedAnswer(event.target.textContent);
     countScore(item);
   };
 
-  const getClass = (option: any) => {
+  const getClass = (option: string) => {
     if (!answerSelected) {
       return '';
     }
@@ -63,6 +64,7 @@ const Questioncard:FC = () => {
     }
     return '';
   };
+
   return (
     <div>
       {showScore ? (
@@ -80,7 +82,7 @@ const Questioncard:FC = () => {
           <h2>Question Card</h2>
           <h3 dangerouslySetInnerHTML={{ __html: question.question }} />
           <ul>
-            {question.answers.map((item: any) => (
+            {question.answers.map((item: IQuestion) => (
               <li
                 key={item.item}
                 onClick={() => handleListItemClick(item.answer, event)}
