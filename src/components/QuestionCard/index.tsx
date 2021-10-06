@@ -1,29 +1,36 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-danger */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import loadQuestions from '../../redux/actions/actionCreators';
+import './style.css';
 
 const Questioncard:FC = () => {
   const [counter, setCounter] = useState<number>(0);
   const [showScore, setShowScore] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
-  const [displayAnswer, setDisplayAnswer] = useState(false);
+  const [answerSelected, setAnswerSelected] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
   const questions = useSelector((store: RootStateOrAny) => store.questionsReducer);
   const dispatch = useDispatch();
+
   console.log(questions);
 
   useEffect(() => {
     if (!questions.length) dispatch(loadQuestions());
   }, []);
 
+  const question = questions[counter];
+  console.log(question);
+
   const countScore = (correct: boolean) => {
     if (correct) {
       console.log('Answer correct');
       setScore(score + 1);
     }
-    setDisplayAnswer(true);
   };
 
   const nextQuestion = (): void => {
@@ -31,64 +38,60 @@ const Questioncard:FC = () => {
 
     if (count < questions.length) {
       setCounter(counter + 1);
-      setDisplayAnswer(false);
+      setAnswerSelected(false);
+      setSelectedAnswer(null);
     } else {
       setShowScore(true);
     }
   };
 
-  let answers:{answer: string, correct: boolean}[] = [];
+  const handleListItemClick = (item: any, event:any) => {
+    setAnswerSelected(true);
+    setSelectedAnswer(event.target.textContent);
+    countScore(item);
+  };
 
-  if (questions.length) {
-    const correctAnswers = { answer: questions[counter].correct_answer, correct: true };
-    const wrongAnswers = questions[counter].incorrect_answers.map((
-      answer: string
-    ) => ({ answer, correct: false }));
-    answers = [correctAnswers, ...wrongAnswers];
-    answers.sort(() => Math.random() - 0.5);
-    console.log(answers);
-  }
-
+  const getClass = (option: any) => {
+    if (!answerSelected) {
+      return '';
+    }
+    if (option === question.correct_answer) {
+      return 'correct';
+    }
+    if (option === selectedAnswer) {
+      return 'selected';
+    }
+    return '';
+  };
   return (
     <div>
-      {
-        showScore ? (
-          <div>
-            You scored
-            {' '}
-            {score}
-            {' '}
-            out of
-            {' '}
-            {questions.length}
-          </div>
-        ) : (
-          questions.length ? (
-            <>
-              <h2>Question Card</h2>
-              <h3 dangerouslySetInnerHTML={{ __html: questions[counter].question }} />
-              {answers.map((item: any) => {
-                const bgColor = displayAnswer
-                  ? questions[counter].correct_answer === item.answer
-                    ? 'green'
-                    : 'red'
-                  : 'blue';
-                return (
-                  <p key={item.answer}>
-                    <button
-                      style={{ backgroundColor: bgColor, color: 'white' }}
-                      type="button"
-                      onClick={() => countScore(item.correct)}
-                      dangerouslySetInnerHTML={{ __html: item.answer }}
-                    />
-                  </p>
-                );
-              })}
-              <button onClick={() => nextQuestion()} type="button"> Next</button>
-            </>
-          ) : ''
-        )
-      }
+      {showScore ? (
+        <div>
+          You scored
+          {' '}
+          {score}
+          {' '}
+          out of
+          {' '}
+          {questions.length}
+        </div>
+      ) : (question ? (
+        <>
+          <h2>Question Card</h2>
+          <h3 dangerouslySetInnerHTML={{ __html: question.question }} />
+          <ul>
+            {question.answers.map((item: any) => (
+              <li
+                key={item.item}
+                onClick={() => handleListItemClick(item.answer, event)}
+                className={getClass(item.item)}
+                dangerouslySetInnerHTML={{ __html: item.item }}
+              />
+            ))}
+          </ul>
+          <button onClick={() => nextQuestion()} type="button"> Next</button>
+        </>
+      ) : '')}
     </div>
   );
 };
