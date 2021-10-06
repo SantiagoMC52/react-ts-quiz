@@ -29,22 +29,23 @@ const Questioncard:FC = () => {
     }
   };
 
-  const nextQuestion = (): void => {
-    const count = counter + 1;
-
-    if (count < questions.length) {
-      setCounter(counter + 1);
-      setAnswerSelected(false);
-      setSelectedAnswer(null);
-    } else {
-      setShowScore(true);
-    }
-  };
-
   const handleListItemClick = (item: boolean, event: any) => {
+    const count = counter + 1;
     setAnswerSelected(true);
     setSelectedAnswer(event.target.textContent);
     countScore(item);
+
+    if (count < questions.length) {
+      setTimeout(() => {
+        setCounter(counter + 1);
+        setAnswerSelected(false);
+        setSelectedAnswer(null);
+      }, 2500);
+    } else {
+      setTimeout(() => {
+        setShowScore(true);
+      }, 2500);
+    }
   };
 
   const getClass = (option: string) => {
@@ -86,7 +87,6 @@ const Questioncard:FC = () => {
               />
             ))}
           </ul>
-          <button onClick={() => nextQuestion()} type="button"> Next</button>
         </>
       ) : '')}
     </div>
