@@ -17,14 +17,18 @@ const Questioncard:FC = () => {
     if (!questions.length) dispatch(loadQuestions());
   }, []);
 
-  const checkAnswer = (correct: boolean, event: any) => {
-    setAnswer(event.target.textContent);
+  const countScore = (correct: boolean) => {
     if (correct) {
       setScore(score + 1);
     }
-    setDisplayAnswer(true);
+  };
 
+  const checkAnswer = (correct: boolean, event: any) => {
     const count = counter + 1;
+
+    countScore(correct);
+    setAnswer(event.target.textContent);
+    setDisplayAnswer(true);
 
     if (count < questions.length) {
       setTimeout(() => {
