@@ -43,6 +43,15 @@ const Questioncard:FC = () => {
     }
   };
 
+  const playAgain = () => {
+    window.location.reload();
+    // setCounter(0);
+    // setShowScore(false);
+    // setScore(0);
+    // setDisplayAnswer(false);
+    // setAnswer(null);
+  };
+
   return (
     <div>
       {
@@ -55,6 +64,8 @@ const Questioncard:FC = () => {
             out of
             {' '}
             {questions.length}
+
+            <button type="button" onClick={playAgain}>Play again</button>
           </div>
         ) : (
           <>
