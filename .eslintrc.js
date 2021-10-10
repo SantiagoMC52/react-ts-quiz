@@ -47,6 +47,11 @@ module.exports = {
         tsx: 'never'
       }
     ],
-    'react/react-in-jsx-scope': 'off'
+    'react/react-in-jsx-scope': 'off',
+    'no-nested-ternary': 'off',
+    'react/no-danger': 'off',
+    'no-constant-condition': 'off',
+    'jsx-a11y/control-has-associated-label': 'off',
+    'no-restricted-globals': 'off'
   }
 };
