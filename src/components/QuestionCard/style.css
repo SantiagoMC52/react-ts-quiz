@@ -1,14 +1,12 @@
-li{
-    list-style: none;
+button:hover {
+  background-color: white;
+  color: #222;
+  }
+
+button.correct {
+  background-color: rgb(53, 212, 53);
 }
 
-li:hover {
-    background-color: white;
-    color: #222;
-  }
-  li.correct {
-    background-color: rgb(53, 212, 53);
-  }
-  li.selected:not(correct) {
-    background-color: rgb(206, 58, 58);
-  }
+button.selected:not(correct) {
+  background-color: rgb(206, 58, 58);
+}
