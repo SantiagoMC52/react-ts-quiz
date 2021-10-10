@@ -45,11 +45,6 @@ const Questioncard:FC = () => {
 
   const playAgain = () => {
     window.location.reload();
-    // setCounter(0);
-    // setShowScore(false);
-    // setScore(0);
-    // setDisplayAnswer(false);
-    // setAnswer(null);
   };
 
   return (
