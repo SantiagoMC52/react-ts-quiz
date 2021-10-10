@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-danger */
@@ -10,6 +11,7 @@ const Questioncard:FC = () => {
   const [showScore, setShowScore] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [displayAnswer, setDisplayAnswer] = useState(false);
+  const [answer, setAnswer] = useState<string | null>(null);
   const questions = useSelector((store: RootStateOrAny) => store.questionsReducer);
   const dispatch = useDispatch();
 
@@ -19,21 +21,25 @@ const Questioncard:FC = () => {
     if (!questions.length) dispatch(loadQuestions());
   }, []);
 
-  const countScore = (correct: boolean) => {
+  const checkAnswer = (correct: boolean, event: any) => {
+    setAnswer(event.target.textContent);
     if (correct) {
       setScore(score + 1);
     }
     setDisplayAnswer(true);
-  };
 
-  const nextQuestion = (): void => {
     const count = counter + 1;
 
     if (count < questions.length) {
-      setCounter(counter + 1);
-      setDisplayAnswer(false);
+      setTimeout(() => {
+        setCounter(counter + 1);
+        setDisplayAnswer(false);
+        setAnswer(null);
+      }, 2500);
     } else {
-      setShowScore(true);
+      setTimeout(() => {
+        setShowScore(true);
+      }, 2500);
     }
   };
 
@@ -59,19 +65,22 @@ const Questioncard:FC = () => {
                 ? question.correct_answer === item.item
                   ? 'green'
                   : 'red'
-                : 'blue';
+                    ? answer === item.item
+                      ? 'red'
+                      : 'black'
+                    : ''
+                : 'black';
               return (
                 <p key={item.item}>
                   <button
                     style={{ backgroundColor: bgColor, color: 'white' }}
                     type="button"
-                    onClick={() => countScore(item.answer)}
+                    onClick={() => checkAnswer(item.answer, event)}
                     dangerouslySetInnerHTML={{ __html: item.item }}
                   />
                 </p>
               );
             })}
-            <button onClick={() => nextQuestion()} type="button"> Next</button>
           </>
         )
       }
