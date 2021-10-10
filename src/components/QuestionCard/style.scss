@@ -1,12 +1,39 @@
+@import './../../styles/colors.scss';
+
+*, *::after, *::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  min-width: 100vw;
+  padding: 80px;
+  text-align: center;
+  background-color: $main-bg-color;
+  font-family: $font;
+}
+
+.main {
+  padding: 20px;
+  min-width: 600px;
+  border-radius: 5px;
+  background-color: $container-bg-color;
+  color:white;
+}
+
 button:hover {
   background-color: white;
   color: #222;
   }
 
 button.correct {
-  background-color: rgb(53, 212, 53);
+  background-color: $correct-answer-color;
 }
 
 button.selected:not(correct) {
-  background-color: rgb(206, 58, 58);
+  background-color: $incorrect-answer-color;
 }

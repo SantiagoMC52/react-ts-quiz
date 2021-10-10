@@ -63,9 +63,9 @@ const Questioncard:FC = () => {
   };
 
   return (
-    <div>
+    <div className="main">
       {showScore ? (
-        <div>
+        <div className="main__score">
           You scored
           {' '}
           {score}
@@ -75,10 +75,14 @@ const Questioncard:FC = () => {
           {questions.length}
         </div>
       ) : (question ? (
-        <>
-          <h2>Question Card</h2>
-          <h3 dangerouslySetInnerHTML={{ __html: question.question }} />
-          <div>
+        <div className="main_board">
+          <h2 className="main_board-title">
+            Question
+            {' '}
+            {counter + 1}
+          </h2>
+          <h3 className="main_board-question" dangerouslySetInnerHTML={{ __html: question.question }} />
+          <div className="answers-container">
             {question.answers.map((item: IQuestion) => (
               <button
                 type="button"
@@ -89,7 +93,7 @@ const Questioncard:FC = () => {
               />
             ))}
           </div>
-        </>
+        </div>
       ) : '')}
     </div>
   );
