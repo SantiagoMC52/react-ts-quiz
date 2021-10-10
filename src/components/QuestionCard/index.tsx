@@ -75,14 +75,16 @@ const Questioncard:FC = () => {
           {questions.length}
         </div>
       ) : (question ? (
-        <div className="main_board">
-          <h2 className="main_board-title">
-            Question
-            {' '}
-            {counter + 1}
-          </h2>
-          <h3 className="main_board-question" dangerouslySetInnerHTML={{ __html: question.question }} />
-          <div className="answers-container">
+        <div className="main__board">
+          <div className="main__board-top">
+            <h2 className="main__board-top-title">
+              Question
+              {' '}
+              {counter + 1}
+            </h2>
+            <h3 className="main__board-top-question" dangerouslySetInnerHTML={{ __html: question.question }} />
+          </div>
+          <div className="main__board-answers">
             {question.answers.map((item: IQuestion) => (
               <button
                 type="button"

@@ -1,4 +1,5 @@
 @import './../../styles/colors.scss';
+@import './../../styles/mixins.scss';
 
 *, *::after, *::before {
   margin: 0;
@@ -7,33 +8,69 @@
 }
 
 body{
-  display: flex;
-  justify-content: center;
-  min-height: 100vh;
-  min-width: 100vw;
-  padding: 80px;
-  text-align: center;
+  @include flexbox(row, center, center, null);
   background-color: $main-bg-color;
   font-family: $font;
+  padding: 80px;
+  text-align: center;
+  min-height: 100vh;
+  min-width: 100vw;
 }
 
 .main {
-  padding: 20px;
-  min-width: 600px;
-  border-radius: 5px;
+  @include flexbox(column, center, center, null);
   background-color: $container-bg-color;
+  border-radius: 5px;
   color:white;
+  width: 700px;
+  padding: 20px;
+
+  &__board{
+    @include flexbox(column, space-evenly, null, center);
+    height: 600px;
+    padding: 10px;
+    width: 600px;
+
+      &-top{
+        @include flexbox(inherit, space-between, null, null);
+        height: 100px;
+
+          &-title{
+            font-size: 20px;
+          }
+
+          &-question{
+            font-size: 25px;
+            margin-top: 10px;
+          }
+      }
+
+      &-answers{
+        @include flexbox(column, null, center, null);
+        height: 155x;
+        padding: 10px;
+      }
+  }
 }
 
-button:hover {
-  background-color: white;
-  color: #222;
+button{
+  border-radius: 5px;
+  border: 1px solid black;
+  font-size: 20px;
+  padding: 5px;
+  min-width: 300px;
+  margin-top: 10px;
+
+  &.correct {
+    background-color: $correct-answer-color;
+  }
+  
+  &.selected:not(correct) {
+    background-color: $incorrect-answer-color;
   }
 
-button.correct {
-  background-color: $correct-answer-color;
+  &:hover{
+    cursor: pointer;
+  }
 }
 
-button.selected:not(correct) {
-  background-color: $incorrect-answer-color;
-}
