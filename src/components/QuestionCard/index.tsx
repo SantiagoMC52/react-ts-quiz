@@ -49,6 +49,10 @@ const Questioncard:FC = () => {
     }
   };
 
+  const playAgain = () => {
+    window.location.reload();
+  };
+
   const getClass = (option: string) => {
     if (!answerSelected) {
       return '';
@@ -65,15 +69,18 @@ const Questioncard:FC = () => {
   return (
     <div className="main">
       {showScore ? (
-        <div className="main__score">
-          You scored
-          {' '}
-          {score}
-          {' '}
-          out of
-          {' '}
-          {questions.length}
-        </div>
+        <>
+          <div className="main__score">
+            You scored
+            {' '}
+            {score}
+            {' '}
+            out of
+            {' '}
+            {questions.length}
+          </div>
+          <button type="button" className="main__score-btn" onClick={playAgain}>Play again</button>
+        </>
       ) : (question ? (
         <div className="main__board">
           <div className="main__board-top">
@@ -87,6 +94,7 @@ const Questioncard:FC = () => {
           <div className="main__board-answers">
             {question.answers.map((item: IQuestion) => (
               <button
+                id="answer"
                 type="button"
                 key={item.item}
                 onClick={() => handleListItemClick(item.answer, event)}

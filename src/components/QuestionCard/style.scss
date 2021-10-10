@@ -25,6 +25,23 @@ body{
   width: 700px;
   padding: 20px;
 
+  &__score {
+    font-size: 30px;
+
+    &-btn{
+      font-size: 22px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid black;
+      margin-top: 9px;
+      width: 120px;
+
+      &:hover{
+        cursor: pointer;
+      }
+    }
+  }
+
   &__board{
     @include flexbox(column, space-evenly, null, center);
     height: 600px;
@@ -35,14 +52,14 @@ body{
         @include flexbox(inherit, space-between, null, null);
         height: 100px;
 
-          &-title{
-            font-size: 20px;
-          }
+        &-title{
+          font-size: 20px;
+        }
 
-          &-question{
-            font-size: 25px;
-            margin-top: 10px;
-          }
+        &-question{
+          font-size: 25px;
+          margin-top: 10px;
+        }
       }
 
       &-answers{
@@ -53,7 +70,7 @@ body{
   }
 }
 
-button{
+#answer{
   border-radius: 5px;
   border: 1px solid black;
   font-size: 20px;
