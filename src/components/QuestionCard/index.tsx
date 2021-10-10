@@ -2,7 +2,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import loadQuestions from '../../redux/actions/actionCreators';
-import './style.css';
+import './style.scss';
 
 interface IQuestion {
   item: string;
