@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import loadQuestions from '../../redux/actions/actionCreators';
-import './style.css';
+import './style.scss';
 
 interface IQuestion {
   item: string;
@@ -48,6 +49,10 @@ const Questioncard:FC = () => {
     }
   };
 
+  const playAgain = () => {
+    window.location.reload();
+  };
+
   const getClass = (option: string) => {
     if (!answerSelected) {
       return '';
@@ -62,32 +67,43 @@ const Questioncard:FC = () => {
   };
 
   return (
-    <div>
+    <div className="main">
       {showScore ? (
-        <div>
-          You scored
-          {' '}
-          {score}
-          {' '}
-          out of
-          {' '}
-          {questions.length}
-        </div>
-      ) : (question ? (
         <>
-          <h2>Question Card</h2>
-          <h3 dangerouslySetInnerHTML={{ __html: question.question }} />
-          <ul>
+          <div className="main__score">
+            You scored
+            {' '}
+            {score}
+            {' '}
+            out of
+            {' '}
+            {questions.length}
+          </div>
+          <button type="button" className="main__score-btn" onClick={playAgain}>Play again</button>
+        </>
+      ) : (question ? (
+        <div className="main__board">
+          <div className="main__board-top">
+            <h2 className="main__board-top-title">
+              Question
+              {' '}
+              {counter + 1}
+            </h2>
+            <h3 className="main__board-top-question" dangerouslySetInnerHTML={{ __html: question.question }} />
+          </div>
+          <div className="main__board-answers">
             {question.answers.map((item: IQuestion) => (
-              <li
+              <button
+                id="answer"
+                type="button"
                 key={item.item}
                 onClick={() => handleListItemClick(item.answer, event)}
                 className={getClass(item.item)}
                 dangerouslySetInnerHTML={{ __html: item.item }}
               />
             ))}
-          </ul>
-        </>
+          </div>
+        </div>
       ) : '')}
     </div>
   );
